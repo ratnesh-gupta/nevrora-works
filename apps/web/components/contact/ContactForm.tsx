@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { z } from "zod";
 import {
   INQUIRY_TYPES,
-  STATUTORY_DETAILS,
+  OFFICIAL_SUPPORT_EMAIL,
   type InquiryType,
 } from "@nevrora/config";
 import { Send, CheckCircle2, AlertCircle, Mail, Loader2 } from "lucide-react";
@@ -20,11 +20,12 @@ export const contactSchema = z.object({
   email: z
     .string()
     .trim()
-    .min(1, { message: "Work email is required" })
+    .min(1, { message: "Email is required" })
     .refine((val) => emailRegex.test(val) && !val.includes(".."), {
       message: "Invalid email address format",
     }),
   organization: z.string().trim().optional(),
+  productSlug: z.string().trim().optional(),
   type: z.enum(INQUIRY_TYPES, {
     message: `Inquiry type must be one of: ${INQUIRY_TYPES.join(", ")}`,
   }),
@@ -53,6 +54,7 @@ export function ContactForm({
     name: "",
     email: "",
     organization: "",
+    productSlug: initialCategory,
     type: (INQUIRY_TYPES.includes(initialType as InquiryType)
       ? initialType
       : INQUIRY_TYPES[0]) as InquiryType,
@@ -112,7 +114,6 @@ export function ContactForm({
     setIsSubmitting(true);
     setErrors({});
 
-    // Full schema parse
     const result = contactSchema.safeParse(formData);
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
@@ -159,15 +160,14 @@ export function ContactForm({
 
       setIsSubmitted(true);
       setSubmitMessage(
-        data.message || "Thank you. Your inquiry has been received.",
+        data.message || "Thank you. Your product inquiry has been received.",
       );
       if (data.fallback === "mailto" && data.mailtoUrl) {
         setMailtoFallbackUrl(data.mailtoUrl);
       }
     } catch {
-      // Network failure: generate local mailto fallback
-      const mailtoUrl = `mailto:${STATUTORY_DETAILS.grievanceContact.email}?subject=${encodeURIComponent(
-        `Inquiry: ${formData.type} - ${formData.name}`,
+      const mailtoUrl = `mailto:${OFFICIAL_SUPPORT_EMAIL}?subject=${encodeURIComponent(
+        `[Nevrora Works] ${formData.type} - ${formData.name}`,
       )}&body=${encodeURIComponent(formData.message)}`;
       setIsSubmitted(true);
       setSubmitMessage(
@@ -179,9 +179,9 @@ export function ContactForm({
     }
   };
 
-  const manualMailtoUrl = `mailto:${STATUTORY_DETAILS.grievanceContact.email}?subject=${encodeURIComponent(
-    `Inquiry: ${formData.type || "General inquiry"} - ${formData.name || "Prospective Partner"}`,
-  )}&body=${encodeURIComponent(formData.message || "Discussing collaboration with Nevrora Ventures.")}`;
+  const manualMailtoUrl = `mailto:${OFFICIAL_SUPPORT_EMAIL}?subject=${encodeURIComponent(
+    `[Nevrora Works] ${formData.type || "General product inquiry"} - ${formData.name || "User"}`,
+  )}&body=${encodeURIComponent(formData.message || "Hello Nevrora Works team,")}`;
 
   if (isSubmitted) {
     return (
@@ -191,7 +191,7 @@ export function ContactForm({
         </div>
         <div className="space-y-2">
           <h3 className="font-display text-2xl font-bold text-[#0B1020]">
-            Inquiry Acknowledged
+            Request Received
           </h3>
           <p className="text-sm text-slate-600 max-w-md mx-auto">
             {submitMessage}
@@ -212,9 +212,9 @@ export function ContactForm({
 
         <div className="pt-4 border-t border-slate-100 text-xs text-slate-500">
           <p className="break-words">
-            Official Response Window: Within 24 business hours &bull; DPO:{" "}
-            <span className="break-all">
-              {STATUTORY_DETAILS.grievanceContact.email}
+            Official Support &amp; DPO Contact:{" "}
+            <span className="break-all font-medium">
+              {OFFICIAL_SUPPORT_EMAIL}
             </span>
           </p>
         </div>
@@ -267,13 +267,13 @@ export function ContactForm({
         )}
       </div>
 
-      {/* Work Email */}
+      {/* Email */}
       <div className="space-y-2">
         <label
           htmlFor="email"
           className="block text-sm font-medium text-[#0B1020]"
         >
-          Work Email <span className="text-blue-600">*</span>
+          Email Address <span className="text-blue-600">*</span>
         </label>
         <input
           type="email"
@@ -282,7 +282,7 @@ export function ContactForm({
           required
           value={formData.email}
           onChange={handleChange}
-          placeholder="e.g. priya@enterprise.org"
+          placeholder="e.g. priya@example.com"
           className={`w-full rounded-xl border bg-slate-50/60 px-4 py-3 text-sm text-[#0B1020] placeholder-slate-400 transition-colors focus:border-blue-600 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 ${
             errors.email ? "border-red-500" : "border-slate-200"
           }`}
@@ -296,13 +296,38 @@ export function ContactForm({
         )}
       </div>
 
+      {/* Product Selection (Optional) */}
+      <div className="space-y-2">
+        <label
+          htmlFor="productSlug"
+          className="block text-sm font-medium text-[#0B1020]"
+        >
+          Product{" "}
+          <span className="text-slate-400 text-xs">(Optional)</span>
+        </label>
+        <select
+          id="productSlug"
+          name="productSlug"
+          value={formData.productSlug || ""}
+          onChange={handleChange}
+          className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-3 text-sm text-[#0B1020] transition-colors focus:border-blue-600 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600"
+        >
+          <option value="">All Products / General Nevrora Works</option>
+          <option value="sadhana-daily">Sadhana Daily (Coming Soon)</option>
+          <option value="neermiti-collections">
+            Neermiti Collections (Coming Soon)
+          </option>
+          <option value="driveiq">DriveIQ (Coming Soon)</option>
+        </select>
+      </div>
+
       {/* Organization */}
       <div className="space-y-2">
         <label
           htmlFor="organization"
           className="block text-sm font-medium text-[#0B1020]"
         >
-          Organization / Venture Name{" "}
+          Organization{" "}
           <span className="text-slate-400 text-xs">(Optional)</span>
         </label>
         <input
@@ -311,7 +336,7 @@ export function ContactForm({
           name="organization"
           value={formData.organization}
           onChange={handleChange}
-          placeholder="e.g. Enterprise Solutions Ltd"
+          placeholder="Optional company or institute name"
           className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-3 text-sm text-[#0B1020] placeholder-slate-400 transition-colors focus:border-blue-600 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600"
         />
       </div>
@@ -322,7 +347,7 @@ export function ContactForm({
           htmlFor="type"
           className="block text-sm font-medium text-[#0B1020]"
         >
-          Inquiry Type <span className="text-blue-600">*</span>
+          Enquiry Category <span className="text-blue-600">*</span>
         </label>
         <select
           id="type"
@@ -363,7 +388,7 @@ export function ContactForm({
           required
           value={formData.message}
           onChange={handleChange}
-          placeholder="Tell us about your venture idea, engineering challenge, or partnership vision..."
+          placeholder="Let us know which product you would like launch notifications for, or how we can help..."
           className={`w-full rounded-xl border bg-slate-50/60 px-4 py-3 text-sm text-[#0B1020] placeholder-slate-400 transition-colors focus:border-blue-600 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 ${
             errors.message ? "border-red-500" : "border-slate-200"
           }`}
@@ -377,10 +402,8 @@ export function ContactForm({
         )}
       </div>
 
-      {/* Hidden Category context */}
       <input type="hidden" name="category" value={formData.category} />
 
-      {/* Submit Button & Direct Mailto Fallback */}
       <div className="pt-4 flex flex-col sm:flex-row items-center gap-4">
         <button
           type="submit"
@@ -390,11 +413,11 @@ export function ContactForm({
           {isSubmitting ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              <span>Transmitting...</span>
+              <span>Sending...</span>
             </>
           ) : (
             <>
-              <span>Send Inquiry</span>
+              <span>Submit Enquiry</span>
               <Send className="h-4 w-4" />
             </>
           )}
@@ -405,7 +428,7 @@ export function ContactForm({
           className="inline-flex items-center gap-2 text-xs text-slate-600 hover:text-blue-600 transition-colors py-2"
         >
           <Mail className="h-3.5 w-3.5" />
-          <span>Or send directly via email</span>
+          <span>Or email {OFFICIAL_SUPPORT_EMAIL}</span>
         </a>
       </div>
     </form>
