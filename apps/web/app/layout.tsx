@@ -7,38 +7,39 @@ import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://nevrora.com",
+    process.env.NEXT_PUBLIC_SITE_URL || "https://nevrora-works.com",
   ),
   title: {
-    default:
-      "Nevrora Ventures | Institutional Venture Studio & Engineering Advisory",
-    template: "%s | Nevrora Ventures",
+    default: "Nevrora Works | Ideas into products.",
+    template: "%s | Nevrora Works",
   },
   description:
-    "Institutional venture studio and elite engineering consultancy architecting intelligent systems, transformative products, and resilient platforms.",
+    "Nevrora Works is a product company creating, owning, and operating useful digital products across mobile, web, SaaS, and AI-enabled categories.",
   keywords: [
-    "Venture Studio",
-    "Intelligent Automation",
-    "Custom Software Engineering",
-    "AI Agents",
-    "Cloud DevOps",
-    "Nevrora Technologies",
+    "Nevrora Works",
+    "Ideas into products",
+    "Digital Products",
+    "Sadhana Daily",
+    "Neermiti Collections",
+    "DriveIQ",
+    "Mobile Apps",
+    "SaaS Products",
   ],
   authors: [{ name: "Nevrora Technologies Private Limited" }],
   openGraph: {
     type: "website",
-    locale: "en_IE",
-    url: "https://nevrora.com",
-    siteName: "Nevrora Ventures",
-    title: "Nevrora Ventures | Venture Studio & Intelligent Engineering",
+    locale: "en_IN",
+    url: "https://nevrora-works.com",
+    siteName: "Nevrora Works",
+    title: "Nevrora Works | Ideas into products.",
     description:
-      "Architecting high-conviction technology ventures and resilient intelligence systems.",
+      "Creating, owning, and operating useful digital products across mobile, web, SaaS, and AI-enabled categories.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Nevrora Ventures",
+        alt: "Nevrora Works — Ideas into products.",
       },
     ],
   },

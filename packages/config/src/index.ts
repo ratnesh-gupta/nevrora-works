@@ -1,22 +1,26 @@
 /**
  * @nevrora/config
- * Shared design tokens, brand constants, navigation, and statutory configuration
+ * Shared design tokens, brand constants, lifecycle rules, navigation, and statutory configuration
+ * for Nevrora Works ("Ideas into products.")
  */
 
-import type { NavigationItem, SiteConfig } from "@nevrora/types";
+import type {
+  NavigationItem,
+  ProductLifecycleStatus,
+  SiteConfig,
+} from "@nevrora/types";
 
 /**
  * Palette A: Deep Forest theme design tokens
- * Authoritative color specification for Nevrora Ventures platform
  */
 export const PALETTE_A = {
-  forest: "#173C32", // Deep forest green (brand primary dark)
-  evergreen: "#071B18", // Dark evergreen (deep background)
-  gold: "#C9A35B", // Champagne gold (accent & highlight)
-  cream: "#F7F2E9", // Warm cream (light surface & typography)
-  charcoal: "#252725", // Charcoal (dark neutral)
-  sage: "#A8B7A8", // Muted sage (secondary accent & borders)
-  white: "#FFFFFF", // Crisp white
+  forest: "#173C32",
+  evergreen: "#071B18",
+  gold: "#C9A35B",
+  cream: "#F7F2E9",
+  charcoal: "#252725",
+  sage: "#A8B7A8",
+  white: "#FFFFFF",
 } as const;
 
 export type Palette = typeof PALETTE_A;
@@ -52,7 +56,6 @@ export const PALETTE_LIGHT_GRADIENT = {
 
 /**
  * Brand typography stacks
- * Editorial serif (Playfair Display) paired with clean sans-serif (Inter / Instrument Sans)
  */
 export const TYPOGRAPHY = {
   fontDisplay: "Playfair Display, Georgia, serif",
@@ -62,24 +65,29 @@ export const TYPOGRAPHY = {
 } as const;
 
 /**
- * Locked primary navigation items (6 items)
- * Strict rule: /ventures route and nav item are strictly prohibited
+ * Official support email for Nevrora Works and its product portfolio
+ */
+export const OFFICIAL_SUPPORT_EMAIL = "support@nevrora-works.com" as const;
+
+/**
+ * Section 4: Nevrora Works primary navigation items (6 items)
+ * Strictly excludes B2B Digital service routes (/services, /our-work, /ventures)
  */
 export const LOCKED_NAVIGATION_ITEMS: readonly NavigationItem[] = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
   { label: "Products", href: "/products" },
-  { label: "Our Work", href: "/our-work" },
+  { label: "Support", href: "/support" },
+  { label: "About", href: "/about" },
+  { label: "Announcements", href: "/announcements" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
 /**
- * Primary navigation CTA button
+ * Primary navigation CTA button for Nevrora Works (Product Discovery P0)
  */
 export const LOCKED_NAVIGATION_CTA = {
-  label: "Start a Conversation",
-  href: "/contact",
+  label: "Explore Products",
+  href: "/products",
 } as const;
 
 export type LockedNavigation = typeof LOCKED_NAVIGATION_ITEMS & {
@@ -89,7 +97,6 @@ export type LockedNavigation = typeof LOCKED_NAVIGATION_ITEMS & {
 
 /**
  * Locked navigation structure combining items and primary CTA
- * Can be used as an iterable array of navigation links or as an object with .cta and .items
  */
 export const LOCKED_NAVIGATION: LockedNavigation = Object.assign(
   [...LOCKED_NAVIGATION_ITEMS],
@@ -100,13 +107,103 @@ export const LOCKED_NAVIGATION: LockedNavigation = Object.assign(
 ) as unknown as LockedNavigation;
 
 /**
- * Supported contact inquiry categories
+ * Section 5 & NW-FR-03: Lifecycle status rules controlling visibility, labels, and CTA behavior
+ */
+export interface LifecycleRule {
+  status: ProductLifecycleStatus;
+  label: string;
+  isPublic: boolean;
+  defaultCtaLabel: string;
+  badgeStyle: string;
+  description: string;
+}
+
+export const LIFECYCLE_STATUS_CONFIG: Record<
+  ProductLifecycleStatus,
+  LifecycleRule
+> = {
+  internal_draft: {
+    status: "internal_draft",
+    label: "Internal Draft",
+    isPublic: false,
+    defaultCtaLabel: "Internal Only",
+    badgeStyle: "bg-slate-100 text-slate-600 border-slate-300",
+    description: "Internal draft not visible to the public.",
+  },
+  coming_soon: {
+    status: "coming_soon",
+    label: "Coming Soon",
+    isPublic: true,
+    defaultCtaLabel: "Notify Me",
+    badgeStyle: "bg-amber-50 text-amber-800 border-amber-300/80",
+    description:
+      "Approved product preview. Release timing will be announced when confirmed.",
+  },
+  beta: {
+    status: "beta",
+    label: "Beta",
+    isPublic: true,
+    defaultCtaLabel: "Join Beta",
+    badgeStyle: "bg-violet-50 text-violet-800 border-violet-300/80",
+    description:
+      "Limited beta release with early-access eligibility and known preview boundaries.",
+  },
+  live: {
+    status: "live",
+    label: "Live",
+    isPublic: true,
+    defaultCtaLabel: "Get it on Google Play",
+    badgeStyle: "bg-emerald-50 text-emerald-800 border-emerald-300/80",
+    description: "Generally available on supported platforms.",
+  },
+  maintenance: {
+    status: "maintenance",
+    label: "Maintenance",
+    isPublic: true,
+    defaultCtaLabel: "Contact Support",
+    badgeStyle: "bg-orange-50 text-orange-800 border-orange-300/80",
+    description:
+      "Temporarily undergoing scheduled maintenance or platform upgrades.",
+  },
+  discontinued: {
+    status: "discontinued",
+    label: "Discontinued",
+    isPublic: true,
+    defaultCtaLabel: "Migration & Support",
+    badgeStyle: "bg-rose-50 text-rose-800 border-rose-300/80",
+    description:
+      "End of active distribution; see support and migration options.",
+  },
+} as const;
+
+/**
+ * Portfolio categories for product directory filtering (Section 4)
+ */
+export const PRODUCT_CATEGORIES = [
+  "Mobile & Daily Practice",
+  "Commerce & Lifestyle",
+  "SaaS & Operations",
+  "AI & Productivity",
+] as const;
+
+/**
+ * Supported platform filter options for product directory (Section 4)
+ */
+export const PRODUCT_PLATFORM_FILTERS = [
+  { id: "android", label: "Android (Google Play)" },
+  { id: "web", label: "Web Application" },
+  { id: "ios", label: "iOS" },
+  { id: "saas", label: "Cloud SaaS" },
+] as const;
+
+/**
+ * Supported contact & product inquiry categories for Nevrora Works (Section 4)
  */
 export const INQUIRY_TYPES = [
-  "Venture idea",
-  "Strategic partnership",
-  "Business collaboration",
-  "General inquiry",
+  "Product early access / Notify me",
+  "Product support & feedback",
+  "Product & distribution partnership",
+  "General product inquiry",
 ] as const;
 
 export type InquiryType = (typeof INQUIRY_TYPES)[number];
@@ -117,32 +214,34 @@ export type InquiryType = (typeof INQUIRY_TYPES)[number];
  */
 export const STATUTORY_DETAILS = {
   legalName: "Nevrora Technologies Private Limited",
-  cin: "U72900KA2024PTC189000", // Formatted MCA CIN
+  cin: "U72900KA2024PTC189000",
   registeredOffice: "Bengaluru, Karnataka, India",
   phone: "+91 80 4123 4567",
-  email: "hello@nevrora.com",
+  email: OFFICIAL_SUPPORT_EMAIL,
+  supportEmail: OFFICIAL_SUPPORT_EMAIL,
   grievanceContact: {
     name: "Ratnesh Kumar Gupta",
     role: "Grievance Officer & Data Protection Officer",
-    email: "ratnesh.k.gupta@icloud.com",
+    email: OFFICIAL_SUPPORT_EMAIL,
     phone: "+91 80 4123 4567",
     address: "Bengaluru, Karnataka, India",
   },
 } as const;
 
 /**
- * Complete default site configuration conforming to SiteConfig interface
+ * Complete default site configuration for Nevrora Works
  */
 export const DEFAULT_SITE_CONFIG: SiteConfig = {
-  name: "Nevrora Ventures",
-  tagline: "Venture Studio & Intelligent Engineering",
+  name: "Nevrora Works",
+  tagline: "Ideas into products.",
   description:
-    "Institutional venture studio and elite engineering consultancy architecting intelligent systems, transformative products, and resilient platforms.",
+    "Nevrora Works is a product company creating, owning, and operating useful digital products across mobile, web, SaaS, and AI-enabled categories.",
   legalName: STATUTORY_DETAILS.legalName,
   cin: STATUTORY_DETAILS.cin,
   registeredOffice: STATUTORY_DETAILS.registeredOffice,
   phone: STATUTORY_DETAILS.phone,
   email: STATUTORY_DETAILS.email,
+  supportEmail: STATUTORY_DETAILS.supportEmail,
   grievanceContact: { ...STATUTORY_DETAILS.grievanceContact },
   navigation: [...LOCKED_NAVIGATION_ITEMS],
   cta: { ...LOCKED_NAVIGATION_CTA },

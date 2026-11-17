@@ -4,102 +4,104 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@nevrora/types";
-import { ArrowRight, CheckCircle2, Layers } from "lucide-react";
-
-const PRODUCT_VISUALS: Record<
-  string,
-  { imageUrl: string; imageAlt: string; telemetry: string }
-> = {
-  "neermiti-collections": {
-    imageUrl:
-      "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=1000&q=80",
-    imageAlt:
-      "Neermiti Collections artisanal handloom textiles and luxury lifestyle showcase",
-    telemetry: "14 Artisan Clusters • <0.8s Edge LCP",
-  },
-  "sadhana-daily": {
-    imageUrl:
-      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1000&q=80",
-    imageAlt:
-      "Sadhana Daily calm sunrise meditation and daily spiritual practice environment",
-    telemetry: "WASM Ephemeris • 100% Offline SQLite",
-  },
-};
+import { LIFECYCLE_STATUS_CONFIG } from "@nevrora/config";
+import { resolveProductPrimaryCta } from "../../lib/products-data";
+import { trackProductCtaClick } from "../../lib/analytics";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Smartphone,
+  Globe,
+  Cloud,
+  ExternalLink,
+} from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const visual = PRODUCT_VISUALS[product.slug];
+  const lifecycleRule = LIFECYCLE_STATUS_CONFIG[product.lifecycle_status];
+  const resolvedCta = resolveProductPrimaryCta(product);
+
+  const handleCtaClick = () => {
+    trackProductCtaClick({
+      productId: product.id,
+      productSlug: product.slug,
+      lifecycleStatus: product.lifecycle_status,
+      platform: resolvedCta.platformType,
+      ctaLabel: resolvedCta.label,
+      destinationUrl: resolvedCta.href,
+    });
+  };
 
   return (
-    <div className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-elevated transition-all duration-300 hover:border-blue-400/40 hover:shadow-xl">
-      {/* Curated Visual Header Banner */}
-      {visual && (
-        <div className="relative h-52 w-full overflow-hidden bg-slate-100">
-          <Image
-            src={visual.imageUrl}
-            alt={visual.imageAlt}
-            fill
-            unoptimized
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1020]/85 via-[#0B1020]/25 to-transparent" />
-          <div className="absolute top-4 left-4 right-4 flex flex-wrap items-center justify-between gap-2">
-            <span className="font-mono text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 px-3 py-1 rounded-full shadow-sm">
-              VENTURE {product.number}
-            </span>
-            <span className="rounded-full bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-semibold text-[#0B1020] uppercase tracking-wider shadow-sm">
-              {product.category}
-            </span>
-          </div>
-          <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between gap-2 text-white">
-            <span className="font-mono text-[11px] font-medium text-cyan-200">
-              {visual.telemetry}
-            </span>
-          </div>
+    <article
+      className="product-card group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-elevated transition-all duration-300 hover:border-blue-400/40 hover:shadow-xl"
+      data-product-slug={product.slug}
+      data-lifecycle-status={product.lifecycle_status}
+    >
+      {/* Visual Header Banner */}
+      <div className="relative h-52 w-full overflow-hidden bg-slate-100">
+        <Image
+          src={product.heroMedia.url}
+          alt={product.heroMedia.altText}
+          fill
+          unoptimized
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1020]/85 via-[#0B1020]/30 to-transparent" />
+        <div className="absolute top-4 left-4 right-4 flex flex-wrap items-center justify-between gap-2">
+          <span
+            className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-bold shadow-sm ${lifecycleRule.badgeStyle}`}
+          >
+            {lifecycleRule.label}
+          </span>
+          <span className="rounded-full bg-white/95 backdrop-blur-md px-3 py-1 text-[11px] font-semibold text-[#0B1020] uppercase tracking-wider shadow-sm">
+            {product.category}
+          </span>
         </div>
-      )}
+        <div className="absolute bottom-3 left-4 right-4 flex flex-wrap items-center gap-2 text-white">
+          {product.platforms.map((pl) => (
+            <span
+              key={pl.platformType}
+              className="inline-flex items-center gap-1 rounded-full bg-white/15 backdrop-blur-md px-2.5 py-0.5 text-[11px] font-medium text-cyan-100 border border-white/20"
+            >
+              {pl.platformType === "android" || pl.platformType === "ios" ? (
+                <Smartphone className="h-3 w-3" />
+              ) : pl.platformType === "saas" ? (
+                <Cloud className="h-3 w-3" />
+              ) : (
+                <Globe className="h-3 w-3" />
+              )}
+              <span>{pl.label}</span>
+            </span>
+          ))}
+        </div>
+      </div>
 
       <div className="flex flex-1 flex-col justify-between p-6 sm:p-8">
-        <div className="space-y-5">
-          {!visual && (
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="font-mono text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200/60 px-2.5 py-0.5 rounded-full">
-                VENTURE {product.number}
-              </span>
-              <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wider">
-                {product.category}
-              </span>
-            </div>
-          )}
-
-          {/* Title & summary */}
+        <div className="space-y-4">
+          {/* Title, tagline & summary */}
           <div>
             <h3 className="font-display text-2xl font-bold text-[#0B1020] transition-colors group-hover:text-blue-600">
-              {product.title}
+              <Link
+                href={`/products/${product.slug}`}
+                className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded"
+              >
+                {product.name}
+              </Link>
             </h3>
+            <p className="mt-1 text-xs font-semibold text-blue-700">
+              {product.tagline}
+            </p>
             <p className="mt-2 text-sm text-slate-600 leading-relaxed">
               {product.summary}
             </p>
           </div>
 
-          {/* White-Label Ecosystem Highlight */}
-          {product.whiteLabelEcosystem && (
-            <div className="rounded-xl border border-blue-500/15 bg-gradient-to-br from-blue-50/50 to-indigo-50/30 p-3.5 space-y-1">
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-800">
-                <Layers className="h-3.5 w-3.5 text-blue-600 shrink-0" />
-                <span>{product.whiteLabelEcosystem.architectureType}</span>
-              </div>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                {product.whiteLabelEcosystem.highlight}
-              </p>
-            </div>
-          )}
-
           {/* Features highlight */}
-          <ul className="space-y-2 text-xs text-slate-600">
+          <ul className="space-y-2 text-xs text-slate-600 pt-1">
             {product.features.slice(0, 3).map((feature) => (
               <li key={feature} className="flex items-center gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-blue-600 shrink-0" />
@@ -107,47 +109,60 @@ export function ProductCard({ product }: ProductCardProps) {
               </li>
             ))}
           </ul>
-
-          {/* Modern Tech Stack Badges */}
-          {product.techBadges && product.techBadges.length > 0 && (
-            <div className="space-y-1.5 pt-1">
-              <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-                Architecture & Stack
-              </span>
-              <div className="flex flex-wrap gap-1.5">
-                {product.techBadges.map((badge) => (
-                  <span
-                    key={badge}
-                    className="inline-flex items-center rounded-md border border-blue-500/20 bg-gradient-to-br from-blue-500/5 to-violet-500/5 px-2.5 py-0.5 text-[11px] font-medium text-blue-700"
-                  >
-                    {badge}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
-        {/* Card footer actions */}
+        {/* Card footer actions (NW-FR-03, NW-FR-12) */}
         <div className="mt-8 flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-100">
-          <Link
-            href={`/products/${product.slug}`}
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2.5 text-xs font-semibold text-white shadow-sm transition-all hover:opacity-95 hover:scale-[1.02]"
-          >
-            <span>{product.cta || "View Showcase"}</span>
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-
-          {product.privacySlug && (
+          <div className="flex flex-wrap items-center gap-2.5">
             <Link
-              href={product.privacySlug}
-              className="text-xs font-medium text-slate-500 hover:text-blue-600 transition-colors"
+              href={`/products/${product.slug}`}
+              className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2.5 text-xs font-semibold text-white shadow-sm transition-all hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+              aria-label={`View details for ${product.name}`}
             >
-              Privacy Notice
+              <span>View Product</span>
+              <ArrowRight className="h-3.5 w-3.5" />
             </Link>
-          )}
+
+            {resolvedCta.isExternal ? (
+              <a
+                href={resolvedCta.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={handleCtaClick}
+                className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50/70 px-4 py-2.5 text-xs font-semibold text-blue-700 hover:bg-blue-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+                aria-label={`${resolvedCta.label} for ${product.name}`}
+              >
+                <span>{resolvedCta.label}</span>
+                <ExternalLink className="h-3.5 w-3.5" />
+              </a>
+            ) : (
+              <Link
+                href={resolvedCta.href}
+                onClick={handleCtaClick}
+                className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50/70 px-4 py-2.5 text-xs font-semibold text-blue-700 hover:bg-blue-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+                aria-label={`${resolvedCta.label} for ${product.name}`}
+              >
+                <span>{resolvedCta.label}</span>
+              </Link>
+            )}
+          </div>
+
+          <div className="flex items-center gap-3 text-xs">
+            <Link
+              href={product.support.supportUrl}
+              className="font-medium text-slate-500 hover:text-blue-600 transition-colors"
+            >
+              Support
+            </Link>
+            <Link
+              href={product.legal.privacyUrl}
+              className="font-medium text-slate-500 hover:text-blue-600 transition-colors"
+            >
+              Privacy
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 }

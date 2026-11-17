@@ -1,6 +1,11 @@
 import React from "react";
 import Link from "next/link";
-import { STATUTORY_DETAILS, LOCKED_NAVIGATION_ITEMS } from "@nevrora/config";
+import {
+  STATUTORY_DETAILS,
+  LOCKED_NAVIGATION_ITEMS,
+  PRODUCT_CATEGORIES,
+  OFFICIAL_SUPPORT_EMAIL,
+} from "@nevrora/config";
 import { NevroraLogo } from "../brand/NevroraLogo";
 
 export function Footer() {
@@ -14,15 +19,23 @@ export function Footer() {
             <Link
               href="/"
               className="group inline-block"
-              aria-label="Nevrora Ventures Home"
+              aria-label="Nevrora Works Home"
             >
-              <NevroraLogo variant="horizontal" theme="light" size="md" />
-              <span className="sr-only">Nevrora Ventures</span>
+              <NevroraLogo
+                variant="horizontal"
+                theme="light"
+                size="md"
+                subtitle="WORKS"
+              />
+              <span className="sr-only">Nevrora Works</span>
             </Link>
+            <p className="text-xs font-mono font-semibold uppercase tracking-widest text-blue-700">
+              Ideas into products.
+            </p>
             <p className="text-sm text-slate-600 leading-relaxed">
-              Institutional venture studio and elite engineering advisory
-              architecting intelligent systems, transformative products, and
-              resilient platforms.
+              Nevrora Works is a product company creating, owning, and operating
+              useful digital products across mobile, web, SaaS, and AI-enabled
+              categories.
             </p>
           </div>
 
@@ -45,94 +58,72 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Product Categories */}
           <div>
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-[#0B1020] mb-4">
-              Core Capabilities
+              Product Categories
             </h4>
             <ul className="space-y-2 text-sm text-slate-600">
-              <li>
-                <Link
-                  href="/services/ai-intelligent-automation"
-                  className="hover:text-blue-600 transition-colors"
-                >
-                  AI & Intelligent Automation
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/custom-software-development"
-                  className="hover:text-blue-600 transition-colors"
-                >
-                  Custom Software Development
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/web-digital-experiences"
-                  className="hover:text-blue-600 transition-colors"
-                >
-                  Web & Digital Experiences
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/mobile-application-development"
-                  className="hover:text-blue-600 transition-colors"
-                >
-                  Mobile Application Development
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/cloud-devops"
-                  className="hover:text-blue-600 transition-colors"
-                >
-                  Cloud & DevOps
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/technology-consulting"
-                  className="hover:text-blue-600 transition-colors"
-                >
-                  Technology Consulting
-                </Link>
-              </li>
+              {PRODUCT_CATEGORIES.map((category) => (
+                <li key={category}>
+                  <Link
+                    href={`/products?category=${encodeURIComponent(category)}`}
+                    className="hover:text-blue-600 transition-colors"
+                  >
+                    {category}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Incubation Products */}
+          {/* Product Portfolio & Support */}
           <div>
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-[#0B1020] mb-4">
-              Venture Portfolio
+              Product Portfolio
             </h4>
             <ul className="space-y-2 text-sm text-slate-600">
-              <li>
-                <Link
-                  href="/products/neermiti-collections"
-                  className="hover:text-blue-600 transition-colors"
-                >
-                  Neermiti Collections
-                </Link>
-              </li>
               <li>
                 <Link
                   href="/products/sadhana-daily"
                   className="hover:text-blue-600 transition-colors"
                 >
-                  Sadhana Daily
+                  Sadhana Daily (Coming Soon)
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/products/neermiti-collections"
+                  className="hover:text-blue-600 transition-colors"
+                >
+                  Neermiti Collections (Coming Soon)
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/products/driveiq"
+                  className="hover:text-blue-600 transition-colors"
+                >
+                  DriveIQ (Coming Soon)
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/support"
+                  className="font-medium text-blue-600 hover:underline transition-colors"
+                >
+                  Product Support Directory &rarr;
                 </Link>
               </li>
             </ul>
             <div className="mt-6 pt-4 border-t border-slate-200/60 text-xs text-slate-500">
               <p>
-                Inquiries:{" "}
+                Product Support:{" "}
                 <a
-                  href="mailto:hello@nevrora.com"
+                  href={`mailto:${OFFICIAL_SUPPORT_EMAIL}`}
                   className="text-blue-600 hover:underline break-all"
                 >
-                  hello@nevrora.com
+                  {OFFICIAL_SUPPORT_EMAIL}
                 </a>
               </p>
             </div>
@@ -154,12 +145,12 @@ export function Footer() {
 
           <div className="flex flex-wrap items-center justify-between gap-y-2 pt-2">
             <p className="break-words">
-              Contact Phone: {STATUTORY_DETAILS.phone} | Official Email:{" "}
+              Contact Phone: {STATUTORY_DETAILS.phone} | Official Support Email:{" "}
               <a
-                href={`mailto:${STATUTORY_DETAILS.email}`}
+                href={`mailto:${STATUTORY_DETAILS.supportEmail}`}
                 className="text-blue-600 hover:underline break-all"
               >
-                {STATUTORY_DETAILS.email}
+                {STATUTORY_DETAILS.supportEmail}
               </a>
             </p>
             <p className="break-words">
@@ -177,8 +168,8 @@ export function Footer() {
 
           <div className="flex flex-wrap items-center justify-between gap-y-2 pt-4 border-t border-slate-200/60 text-[11px]">
             <p>
-              &copy; {new Date().getFullYear()} {STATUTORY_DETAILS.legalName}.
-              All rights reserved.
+              &copy; {new Date().getFullYear()} {STATUTORY_DETAILS.legalName}{" "}
+              (Nevrora Works). All rights reserved.
             </p>
             <nav
               className="flex flex-wrap items-center gap-x-4 gap-y-2"
@@ -210,6 +201,13 @@ export function Footer() {
                 className="hover:text-blue-600 transition-colors"
               >
                 Cookie Notice & Preferences
+              </Link>
+              <span>&bull;</span>
+              <Link
+                href="/support"
+                className="hover:text-blue-600 transition-colors"
+              >
+                Support Directory
               </Link>
               <span>&bull;</span>
               <Link

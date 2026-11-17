@@ -205,7 +205,7 @@ export function NevroraLogo({
   theme = "dark",
   size = "md",
   showDivider = true,
-  subtitle = "VENTURES",
+  subtitle = "WORKS",
   className = "",
 }: NevroraLogoProps) {
   const s = SIZE_MAP[size];
