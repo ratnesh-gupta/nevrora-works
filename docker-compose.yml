@@ -1,0 +1,40 @@
+services:
+  api:
+    image: node:22-alpine
+    working_dir: /workspace
+    command: sh -c "corepack enable && pnpm install --frozen-lockfile && pnpm --filter @nevrora/api dev"
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: "8000"
+      GOOGLE_SHEET_WEBHOOK_URL: ${GOOGLE_SHEET_WEBHOOK_URL:-}
+    volumes:
+      - .:/workspace
+      - api_root_node_modules:/workspace/node_modules
+      - api_app_node_modules:/workspace/apps/api/node_modules
+      - api_web_node_modules:/workspace/apps/web/node_modules
+    init: true
+
+  web:
+    image: node:22-alpine
+    working_dir: /workspace
+    command: sh -c "corepack enable && pnpm install --frozen-lockfile && pnpm --filter @nevrora/web exec next dev --hostname 0.0.0.0"
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: "3000"
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    volumes:
+      - .:/workspace
+      - web_root_node_modules:/workspace/node_modules
+      - web_app_node_modules:/workspace/apps/web/node_modules
+      - web_api_node_modules:/workspace/apps/api/node_modules
+    init: true
+
+volumes:
+  api_root_node_modules:
+  api_app_node_modules:
+  api_web_node_modules:
+  web_root_node_modules:
+  web_app_node_modules:
+  web_api_node_modules:

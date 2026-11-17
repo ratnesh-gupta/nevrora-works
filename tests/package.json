@@ -1,0 +1,14 @@
+{
+  "name": "@nevrora/tests",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node runner/index.mjs",
+    "test:tier1": "node runner/index.mjs --tier=1",
+    "test:tier2": "node runner/index.mjs --tier=2",
+    "test:tier3": "node runner/index.mjs --tier=3",
+    "test:tier4": "node runner/index.mjs --tier=4",
+    "test:native": "node --test e2e/**/*.test.mjs"
+  }
+}
