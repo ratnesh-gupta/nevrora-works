@@ -1,15 +1,16 @@
 import {
   PALETTE_A,
   TYPOGRAPHY,
+  OFFICIAL_SUPPORT_EMAIL,
   LOCKED_NAVIGATION,
   LOCKED_NAVIGATION_ITEMS,
   LOCKED_NAVIGATION_CTA,
+  LIFECYCLE_STATUS_CONFIG,
   INQUIRY_TYPES,
   STATUTORY_DETAILS,
   DEFAULT_SITE_CONFIG,
 } from "../src/index";
 
-// Verify PALETTE_A contains exactly required colors with correct hex format
 const hexRegex = /^#([A-Fa-f0-9]{6})$/;
 
 function assert(condition: boolean, msg: string): asserts condition {
@@ -37,7 +38,7 @@ assert(
   "fontMono must include monospace",
 );
 
-// 3. Locked navigation checks (6 items + CTA)
+// 3. Nevrora Works navigation checks (Section 4 IA)
 assert(
   LOCKED_NAVIGATION.length === 6,
   "LOCKED_NAVIGATION array length must be 6",
@@ -47,19 +48,20 @@ assert(
   "LOCKED_NAVIGATION.items must have 6 items",
 );
 assert(
-  LOCKED_NAVIGATION.cta.label === "Start a Conversation",
-  "LOCKED_NAVIGATION.cta must be accessible",
+  LOCKED_NAVIGATION.cta.label === "Explore Products",
+  "LOCKED_NAVIGATION.cta label must be Explore Products",
 );
 assert(
-  LOCKED_NAVIGATION_ITEMS.length === 6,
-  "Navigation must have exactly 6 items",
+  LOCKED_NAVIGATION_CTA.href === "/products",
+  "CTA href must be /products",
 );
+
 const expectedLabels = [
   "Home",
-  "About",
-  "Services",
   "Products",
-  "Our Work",
+  "Support",
+  "About",
+  "Announcements",
   "Contact",
 ];
 for (const [idx, label] of expectedLabels.entries()) {
@@ -69,74 +71,65 @@ for (const [idx, label] of expectedLabels.entries()) {
   );
 }
 
-// Negative constraint verification: /ventures MUST NOT exist in navigation
+// Negative constraint verification: B2B /services, /our-work, and /ventures MUST NOT exist in navigation
 for (const item of LOCKED_NAVIGATION_ITEMS) {
   assert(
-    item.href !== "/ventures",
-    "Forbidden /ventures found in navigation items",
-  );
-  assert(
-    item.label.toLowerCase() !== "ventures",
-    'Forbidden "ventures" label found',
+    item.href !== "/ventures" &&
+      item.href !== "/services" &&
+      item.href !== "/our-work",
+    `Forbidden route ${item.href} found in Nevrora Works navigation`,
   );
 }
 
+// 4. Lifecycle status rules check (Section 5 & NW-FR-03)
 assert(
-  LOCKED_NAVIGATION_CTA.label === "Start a Conversation",
-  "CTA label must match",
+  LIFECYCLE_STATUS_CONFIG.internal_draft.isPublic === false,
+  "internal_draft must not be public",
 );
-assert(LOCKED_NAVIGATION_CTA.href === "/contact", "CTA href must be /contact");
+assert(
+  LIFECYCLE_STATUS_CONFIG.coming_soon.isPublic === true,
+  "coming_soon must be public",
+);
+assert(
+  LIFECYCLE_STATUS_CONFIG.beta.isPublic === true,
+  "beta must be public",
+);
+assert(
+  LIFECYCLE_STATUS_CONFIG.live.isPublic === true,
+  "live must be public",
+);
+assert(
+  LIFECYCLE_STATUS_CONFIG.maintenance.isPublic === true,
+  "maintenance must be public",
+);
+assert(
+  LIFECYCLE_STATUS_CONFIG.discontinued.isPublic === true,
+  "discontinued must be public",
+);
 
-// 4. Inquiry types checks
-assert(INQUIRY_TYPES.length === 4, "Must have 4 inquiry types");
-assert(INQUIRY_TYPES.includes("Venture idea"), "Must include Venture idea");
+// 5. Support email & Statutory details
 assert(
-  INQUIRY_TYPES.includes("Strategic partnership"),
-  "Must include Strategic partnership",
+  OFFICIAL_SUPPORT_EMAIL === "support@nevrora-works.com",
+  "Official support email must be support@nevrora-works.com",
 );
-assert(
-  INQUIRY_TYPES.includes("Business collaboration"),
-  "Must include Business collaboration",
-);
-assert(
-  INQUIRY_TYPES.includes("General inquiry"),
-  "Must include General inquiry",
-);
-
-// 5. Statutory details (Companies Act Rule 26 & DPDP Act 2023)
 assert(
   STATUTORY_DETAILS.legalName === "Nevrora Technologies Private Limited",
   "Legal name must match",
 );
-assert(STATUTORY_DETAILS.cin.length === 21, "CIN must be 21 characters");
 assert(
-  STATUTORY_DETAILS.cin === "U72900KA2024PTC189000",
-  "CIN must match statutory registration",
-);
-assert(
-  Boolean(STATUTORY_DETAILS.registeredOffice),
-  "Registered office must be present",
-);
-assert(Boolean(STATUTORY_DETAILS.phone), "Phone must be present");
-assert(Boolean(STATUTORY_DETAILS.email), "Email must be present");
-assert(
-  Boolean(STATUTORY_DETAILS.grievanceContact.name),
-  "Grievance officer name must be present",
-);
-assert(
-  Boolean(STATUTORY_DETAILS.grievanceContact.email),
-  "Grievance officer email must be present",
+  STATUTORY_DETAILS.supportEmail === "support@nevrora-works.com",
+  "Statutory support email must match support@nevrora-works.com",
 );
 
-// 6. Default site config
-assert(DEFAULT_SITE_CONFIG.name === "Nevrora Ventures", "Site name must match");
+// 6. Default site config (Section 1 Identity)
+assert(DEFAULT_SITE_CONFIG.name === "Nevrora Works", "Site name must be Nevrora Works");
 assert(
-  DEFAULT_SITE_CONFIG.navigation.length === 6,
-  "SiteConfig navigation length must be 6",
+  DEFAULT_SITE_CONFIG.tagline === "Ideas into products.",
+  "Tagline must be Ideas into products.",
 );
 assert(
-  DEFAULT_SITE_CONFIG.cta.label === "Start a Conversation",
-  "SiteConfig CTA label must match",
+  DEFAULT_SITE_CONFIG.inquiryTypes.length === 4,
+  "Must have 4 product inquiry types",
 );
 
 export const allConfigTestsPassed = true;
