@@ -41,9 +41,14 @@ export function MobileNav({ isOpen, onClose, currentPath }: MobileNavProps) {
           href="/"
           onClick={onClose}
           className="inline-flex items-center"
-          aria-label="Nevrora Ventures Home"
+          aria-label="Nevrora Works Home"
         >
-          <NevroraLogo variant="horizontal" theme="light" size="sm" />
+          <NevroraLogo
+            variant="horizontal"
+            theme="light"
+            size="sm"
+            subtitle="WORKS"
+          />
         </Link>
         <button
           type="button"
@@ -93,7 +98,7 @@ export function MobileNav({ isOpen, onClose, currentPath }: MobileNavProps) {
             {LOCKED_NAVIGATION_CTA.label}
           </Link>
           <p className="text-xs text-center text-slate-500">
-            Institutional Venture Studio & Engineering Advisory
+            Nevrora Works &bull; Ideas into products.
           </p>
         </div>
       </nav>
