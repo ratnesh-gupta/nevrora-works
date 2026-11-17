@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { z } from "zod";
-import { INQUIRY_TYPES } from "@nevrora/config";
+import { INQUIRY_TYPES, OFFICIAL_SUPPORT_EMAIL } from "@nevrora/config";
 import type { ContactSubmission } from "@nevrora/types";
 import { contactRateLimiter } from "../middleware/rateLimiter.js";
 
 export const contactRouter = Router();
 
 /**
- * Zod validation schema for contact inquiry submissions
+ * Zod validation schema for Nevrora Works product & partnership inquiry submissions
  */
 export const contactSchema = z.object({
   name: z
@@ -19,6 +19,7 @@ export const contactSchema = z.object({
     .trim()
     .email("Invalid email address"),
   organization: z.string().trim().optional(),
+  productSlug: z.string().trim().optional(),
   type: z.enum(INQUIRY_TYPES as unknown as [string, ...string[]], {
     errorMap: () => ({
       message: `Type must be one of: ${INQUIRY_TYPES.join(", ")}`,
@@ -31,17 +32,18 @@ export const contactSchema = z.object({
 });
 
 /**
- * Helper to construct mailto fallback URI
+ * Helper to construct mailto fallback URI routed to support@nevrora-works.com
  */
 export function buildMailtoFallback(submission: ContactSubmission): string {
-  const recipient = "ratnesh.k.gupta@icloud.com";
+  const recipient = OFFICIAL_SUPPORT_EMAIL;
   const subject = encodeURIComponent(
-    `[Nevrora Inquiry] ${submission.type} - ${submission.name}`,
+    `[Nevrora Works] ${submission.type}${submission.productSlug ? ` (${submission.productSlug})` : ""} - ${submission.name}`,
   );
   const bodyText = [
     `Name: ${submission.name}`,
     `Email: ${submission.email}`,
     submission.organization ? `Organization: ${submission.organization}` : null,
+    submission.productSlug ? `Product: ${submission.productSlug}` : null,
     `Category: ${submission.type}`,
     `\nMessage:`,
     submission.message,
@@ -55,7 +57,7 @@ export function buildMailtoFallback(submission: ContactSubmission): string {
 /**
  * POST /api/contact
  * Validates inquiry, forwards to Google Sheets webhook if configured,
- * or returns mailto fallback link.
+ * or returns mailto fallback link to support@nevrora-works.com.
  */
 contactRouter.post("/contact", contactRateLimiter, async (req, res, next) => {
   try {
@@ -78,7 +80,6 @@ contactRouter.post("/contact", contactRateLimiter, async (req, res, next) => {
     const mailtoFallback = buildMailtoFallback(submission);
     const webhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL;
 
-    // If webhook URL is configured, attempt forwarding
     if (webhookUrl && webhookUrl.trim().length > 0) {
       try {
         const response = await fetch(webhookUrl, {
@@ -94,7 +95,7 @@ contactRouter.post("/contact", contactRateLimiter, async (req, res, next) => {
           res.status(200).json({
             success: true,
             message:
-              "Inquiry received successfully. Our team will contact you shortly.",
+              "Product enquiry received successfully. Our team will respond via support@nevrora-works.com.",
             forwardedToSheets: true,
           });
           return;
@@ -111,7 +112,6 @@ contactRouter.post("/contact", contactRateLimiter, async (req, res, next) => {
       }
     }
 
-    // Default fallback: return mailto link
     res.status(200).json({
       success: true,
       message: "Inquiry received. A direct email fallback has been generated.",

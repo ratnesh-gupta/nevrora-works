@@ -8,6 +8,7 @@ export const companyData: SiteConfig = {
   registeredOffice: STATUTORY_DETAILS.registeredOffice,
   phone: STATUTORY_DETAILS.phone,
   email: STATUTORY_DETAILS.email,
+  supportEmail: STATUTORY_DETAILS.supportEmail,
   grievanceContact: {
     ...STATUTORY_DETAILS.grievanceContact,
   },
