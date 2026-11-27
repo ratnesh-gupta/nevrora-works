@@ -1,12 +1,12 @@
 import type { MetadataRoute } from "next";
-import { getPublishedServices } from "../lib/services-data";
 import { getPublishedProducts } from "../lib/products-data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nevrora.com";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://nevrora-works.com";
   const currentDate = new Date();
 
-  // Static routes (STRICT: Zero inclusion of /ventures)
+  // Static routes for Nevrora Works (STRICT: Zero inclusion of /services, /our-work, or /ventures)
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}`,
@@ -15,27 +15,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
+      url: `${baseUrl}/products`,
+      lastModified: currentDate,
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/support`,
+      lastModified: currentDate,
+      changeFrequency: "weekly",
+      priority: 0.85,
+    },
+    {
       url: `${baseUrl}/about`,
       lastModified: currentDate,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/services`,
+      url: `${baseUrl}/announcements`,
       lastModified: currentDate,
       changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/products`,
-      lastModified: currentDate,
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/our-work`,
-      lastModified: currentDate,
-      changeFrequency: "monthly",
       priority: 0.8,
     },
     {
@@ -70,38 +70,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // 6 Services routes
-  const serviceRoutes: MetadataRoute.Sitemap = getPublishedServices().map(
-    (s) => ({
-      url: `${baseUrl}/services/${s.slug}`,
-      lastModified: currentDate,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    }),
-  );
-
-  // Launch Products routes (STRICT: Excludes driveiq because getPublishedProducts() only returns published === true)
+  // Published product routes (STRICT: Excludes internal_draft products via getPublishedProducts())
   const productRoutes: MetadataRoute.Sitemap = getPublishedProducts().flatMap(
-    (p) => {
-      const entries: MetadataRoute.Sitemap = [
-        {
-          url: `${baseUrl}/products/${p.slug}`,
-          lastModified: currentDate,
-          changeFrequency: "weekly",
-          priority: 0.85,
-        },
-      ];
-      if (p.privacySlug) {
-        entries.push({
-          url: `${baseUrl}${p.privacySlug}`,
-          lastModified: currentDate,
-          changeFrequency: "yearly",
-          priority: 0.4,
-        });
-      }
-      return entries;
-    },
+    (p) => [
+      {
+        url: `${baseUrl}/products/${p.slug}`,
+        lastModified: currentDate,
+        changeFrequency: "weekly",
+        priority: 0.9,
+      },
+      {
+        url: `${baseUrl}${p.legal.privacyUrl}`,
+        lastModified: currentDate,
+        changeFrequency: "yearly",
+        priority: 0.4,
+      },
+      {
+        url: `${baseUrl}${p.legal.termsUrl}`,
+        lastModified: currentDate,
+        changeFrequency: "yearly",
+        priority: 0.4,
+      },
+    ],
   );
 
-  return [...staticRoutes, ...serviceRoutes, ...productRoutes];
+  return [...staticRoutes, ...productRoutes];
 }

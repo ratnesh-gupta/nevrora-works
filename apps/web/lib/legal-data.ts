@@ -3,17 +3,18 @@ import type { PrivacyNotice } from "@nevrora/types";
 
 export const SITE_PRIVACY_POLICY: PrivacyNotice = {
   slug: "privacy-policy",
-  title: "Digital Personal Data Protection Act (DPDP Act 2023) Privacy Policy",
-  lastUpdated: "30 October 2026",
+  title:
+    "Nevrora Works — Digital Personal Data Protection Act (DPDP Act 2023) Privacy Policy",
+  lastUpdated: "16 November 2026",
   dataCollected: [
-    "Contact Details: Full Name, Official Email Address, Organization Name, Phone Number (voluntary)",
-    "Inquiry Metadata: Inquiry Type, Message Context, Collaboration Scope",
-    "Technical Telemetry: IP address, user-agent string, page interaction timestamps (processed only with explicit consent)",
+    "Contact & Support Details: Full Name, Email Address, Organization Name (voluntary), Product Selected",
+    "Inquiry Metadata: Inquiry Type (Early Access / Notify Me, Product Support, Partnership, General), Message Body",
+    "Technical Telemetry: Anonymized product page view and CTA interaction counters (processed only with consent)",
   ],
   purposes: [
-    "Evaluating project proposals, strategic partnerships, and commercial collaborations",
-    "Communicating directly with prospective enterprise clients, partners, and entrepreneurs",
-    "Ensuring platform security, fraud prevention, and regulatory compliance under Indian law",
+    "Sending requested product release notifications and beta invitations",
+    "Responding to product support enquiries and user feedback",
+    "Ensuring platform security, abuse prevention, and statutory compliance under Indian law",
   ],
   rights: [
     "Right to Access Information: Request a summary of personal data being processed and identities of data fiduciaries with whom it has been shared.",
@@ -32,23 +33,23 @@ export const SITE_PRIVACY_POLICY: PrivacyNotice = {
     {
       heading: "1. Notice and Lawful Purpose (Section 5 & 6)",
       body: [
-        "Nevrora Technologies Private Limited ('Nevrora Ventures', 'we', 'us') functions as a Data Fiduciary under the Digital Personal Data Protection Act, 2023 ('DPDP Act 2023'). This Privacy Policy constitutes notice given prior to or at the time of collecting personal data through our website.",
-        "We collect and process personal data exclusively for lawful, specified purposes for which you have provided clear, affirmative consent or where processing is permissible under applicable law.",
+        "Nevrora Technologies Private Limited ('Nevrora Works', 'we', 'us') functions as a Data Fiduciary under the Digital Personal Data Protection Act, 2023 ('DPDP Act 2023'). This Privacy Policy constitutes notice given prior to or at the time of collecting personal data through the Nevrora Works website and product portfolio hub.",
+        "We collect and process personal data exclusively for lawful, specified product discovery, support, and communication purposes for which you have provided clear, affirmative consent.",
       ],
       list: [
-        "Inquiry Evaluation: Reviewing venture ideas, technology proposals, and advisory engagements.",
-        "Direct Correspondence: Answering commercial inquiries and delivering requested documentation.",
-        "Platform Integrity: Safeguarding our digital infrastructure against DDoS attacks, abuse, and security vulnerabilities.",
+        "Product Release Notifications: Communicating launch updates when you opt in via 'Notify Me'.",
+        "Product Support: Resolving user enquiries submitted through our Support Directory or support@nevrora-works.com.",
+        "Platform Integrity: Safeguarding our digital product pages against abuse and security vulnerabilities.",
       ],
     },
     {
       heading: "2. Personal Data Collected",
       body: [
-        "We adhere strictly to the principle of data minimization. We collect only the data strictly necessary for fulfilling your inquiry:",
+        "We adhere strictly to the principle of data minimization. We collect only the data strictly necessary for fulfilling your product request or support inquiry:",
       ],
       list: [
-        "Data provided through the Contact form: Name, Work Email, Organization Name, Category of Interest, and Message Body.",
-        "Technical Analytics: When you explicitly consent via our Cookie Banner, Google Analytics 4 logs anonymized metrics (approximate geographical region, device type, pages visited). IP addresses are not logged or stored.",
+        "Data provided through the Contact / Notify Me form: Name, Email Address, Product Name, Inquiry Category, and Message Body.",
+        "Segmented Product Analytics: Product page views and outbound store/CTA click counts are segmented by product without storing personal identifiers.",
       ],
     },
     {
@@ -57,56 +58,107 @@ export const SITE_PRIVACY_POLICY: PrivacyNotice = {
         "Under Section 11 of the DPDP Act 2023, you as the Data Principal enjoy unambiguous rights regarding your personal data:",
       ],
       list: [
-        "Right to Access: You may request confirmation on whether we process your data, a summary of processed data, and third-party disclosure details.",
-        "Right to Correction & Erasure: You may request correction of inaccurate data or deletion of personal data when the original purpose is fulfilled.",
-        "Right of Grievance Redressal: You are entitled to prompt grievance redressal through our designated Grievance Officer.",
-        "Right to Nominate: You may nominate a representative to exercise rights on your behalf.",
+        "Right to Access: Request confirmation and a summary of processed personal data.",
+        "Right to Correction & Erasure: Request correction of inaccurate data or deletion of personal data when the original purpose is fulfilled.",
+        "Right of Grievance Redressal: Prompt grievance redressal through our designated Grievance Officer.",
+        "Right to Nominate: Nominate a representative to exercise rights on your behalf.",
       ],
     },
     {
       heading: "4. Data Retention and Erasure",
       body: [
-        "We retain inquiry submissions only as long as necessary to fulfill the collaboration assessment and maintain necessary statutory accounting records. Upon fulfillment or upon receipt of a valid erasure request from the Data Principal, records are irrevocably deleted from our production systems within thirty (30) business days.",
+        "We retain product inquiry and notification submissions only as long as necessary to fulfill the requested notification or support case. Upon receipt of a valid erasure request from the Data Principal, records are deleted within thirty (30) business days.",
       ],
     },
     {
       heading: "5. Grievance Redressal Mechanism & Officer Contact",
       body: [
-        `In compliance with Section 13 of the DPDP Act 2023 and Rule 26 of the Companies (Incorporation) Rules, 2014, Nevrora has designated a dedicated Grievance Officer and Data Protection Officer:`,
+        `In compliance with Section 13 of the DPDP Act 2023 and Rule 26 of the Companies (Incorporation) Rules, 2014, Nevrora Works has designated a Grievance Officer and Data Protection Officer:`,
         `Name: ${STATUTORY_DETAILS.grievanceContact.name}`,
         `Role: ${STATUTORY_DETAILS.grievanceContact.role}`,
-        `Official Email: ${STATUTORY_DETAILS.grievanceContact.email}`,
+        `Official Support & Grievance Email: ${STATUTORY_DETAILS.grievanceContact.email}`,
         `Registered Office: ${STATUTORY_DETAILS.registeredOffice}`,
-        `We acknowledge grievances within twenty-four (24) hours and commit to resolving all Data Principal complaints within thirty (30) business days.`,
+        `We acknowledge grievances within twenty-four (24) hours and resolve Data Principal complaints within thirty (30) business days.`,
       ],
     },
   ],
 };
 
 export const PRODUCT_PRIVACY_NOTICES: Record<string, PrivacyNotice> = {
+  "sadhana-daily": {
+    slug: "sadhana-daily",
+    productSlug: "sadhana-daily",
+    effectiveVersion: "1.0",
+    title: "Privacy Notice: Sadhana Daily",
+    lastUpdated: "16 November 2026",
+    dataCollected: [
+      "Approximate geographic latitude/longitude for local solar and lunar Panchang computation",
+      "Personal japa counters, daily practice logs, and reminder preferences stored on-device",
+      "Voluntary support correspondence sent to support@nevrora-works.com",
+    ],
+    purposes: [
+      "Calculating mathematically accurate local Tithi, Nakshatra, and Muhurat timings",
+      "Providing quiet, private daily spiritual practice routines without third-party ads",
+      "Responding to user support requests",
+    ],
+    rights: [
+      "Right to complete privacy: Practice logs are stored locally on your device by default",
+      "Right to immediate local data deletion at any time",
+      "Right to contact our Grievance Officer under DPDP Act 2023",
+    ],
+    grievanceOfficer: {
+      name: STATUTORY_DETAILS.grievanceContact.name,
+      role: "Grievance Officer — Sadhana Daily (Nevrora Works)",
+      email: STATUTORY_DETAILS.grievanceContact.email,
+      phone: STATUTORY_DETAILS.grievanceContact.phone,
+      address: STATUTORY_DETAILS.registeredOffice,
+    },
+    clauses: [
+      {
+        heading: "1. Sacred Practice & Privacy-First Architecture",
+        body: [
+          "Sadhana Daily is a digital product created and operated by Nevrora Works (Nevrora Technologies Private Limited). Operating under the Digital Personal Data Protection Act, 2023 (DPDP Act 2023), Sadhana Daily contains zero third-party advertisement trackers and zero behavioral profiling.",
+        ],
+      },
+      {
+        heading: "2. Local Panchang Calculations & On-Device Storage",
+        body: [
+          "Panchang and muhurat calculations are performed locally on your device whenever possible. Location coordinates are used strictly to compute sunrise, moonrise, and planetary horizons.",
+        ],
+      },
+      {
+        heading: "3. Data Principal Rights & Redressal",
+        body: [
+          "You retain complete ownership over your spiritual practice data and may clear local app storage at any time.",
+          `Designated Grievance Officer: ${STATUTORY_DETAILS.grievanceContact.name} (${STATUTORY_DETAILS.grievanceContact.email}).`,
+        ],
+      },
+    ],
+  },
   "neermiti-collections": {
     slug: "neermiti-collections",
     productSlug: "neermiti-collections",
+    effectiveVersion: "1.0",
     title: "Privacy Notice: Neermiti Collections",
-    lastUpdated: "30 October 2026",
+    lastUpdated: "16 November 2026",
     dataCollected: [
-      "Customer contact information (name, delivery address, phone, email)",
-      "Transaction records and digital authenticity certificate identifiers",
-      "Customer service correspondence regarding artisanal orders",
+      "Customer contact and delivery information (name, shipping address, phone, email)",
+      "Order history and handloom provenance certificate identifiers",
+      "Customer care correspondence sent to support@nevrora-works.com",
     ],
     purposes: [
-      "Fulfillment and dispatch of bespoke handloom and artisanal lifestyle orders",
-      "Issuance of verifiable handloom origin certificates",
-      "Customer support and post-delivery sizing assistance",
+      "Fulfillment and dispatch of handloom apparel and lifestyle orders",
+      "Issuance of weave-cluster provenance details",
+      "Customer support, sizing assistance, and returns processing",
     ],
     rights: [
-      "Right to access purchase history and stored shipping information",
-      "Right to erasure of marketing and customer profile data",
+      "Right to access order history and stored delivery details",
+      "Right to correction and erasure of customer profile data",
       "Right to file a grievance with our designated Grievance Officer",
     ],
     grievanceOfficer: {
       name: STATUTORY_DETAILS.grievanceContact.name,
-      role: "Grievance Officer — Neermiti Collections",
+      role: "Grievance Officer — Neermiti Collections (Nevrora Works)",
       email: STATUTORY_DETAILS.grievanceContact.email,
       phone: STATUTORY_DETAILS.grievanceContact.phone,
       address: STATUTORY_DETAILS.registeredOffice,
@@ -115,69 +167,178 @@ export const PRODUCT_PRIVACY_NOTICES: Record<string, PrivacyNotice> = {
       {
         heading: "1. Scope and Product Context",
         body: [
-          "This dedicated Privacy Notice applies specifically to Neermiti Collections, an artisanal fashion and lifestyle venture incubated by Nevrora Technologies Private Limited, conforming to the Digital Personal Data Protection Act, 2023 (DPDP Act 2023).",
+          "This dedicated Privacy Notice applies specifically to Neermiti Collections, a consumer commerce product operated by Nevrora Works (Nevrora Technologies Private Limited), conforming to the Digital Personal Data Protection Act, 2023 (DPDP Act 2023).",
         ],
       },
       {
-        heading: "2. Commercial Processing and Supply Chain Transparency",
+        heading: "2. Order Fulfillment & Payment Security",
         body: [
-          "Personal data collected during checkout is shared solely with logistics partners for shipping purposes. We do not sell, rent, or monetize customer data. Payment processing occurs through PCI-DSS certified payment gateways; Nevrora does not store raw credit card credentials.",
+          "Personal data collected during checkout is shared solely with verified logistics and payment partners to complete your order. We never sell or rent customer data.",
         ],
       },
       {
         heading: "3. Data Principal Rights & Redressal",
         body: [
-          "Users and customers may exercise their statutory rights of access, correction, and erasure at any time by contacting our designated Grievance Officer.",
+          "Customers may exercise their statutory rights of access, correction, and erasure at any time by contacting our Grievance Officer.",
           `Grievance Officer: ${STATUTORY_DETAILS.grievanceContact.name} (${STATUTORY_DETAILS.grievanceContact.email}).`,
         ],
       },
     ],
   },
-  "sadhana-daily": {
-    slug: "sadhana-daily",
-    productSlug: "sadhana-daily",
-    title: "Privacy Notice: Sadhana Daily",
-    lastUpdated: "30 October 2026",
+  driveiq: {
+    slug: "driveiq",
+    productSlug: "driveiq",
+    effectiveVersion: "1.0",
+    title: "Privacy Notice: DriveIQ",
+    lastUpdated: "16 November 2026",
     dataCollected: [
-      "Approximate geographic latitude/longitude for solar and lunar Panchang computation",
-      "Personal japa counters, spiritual diary notes, and meditation duration",
-      "Device preferences (theme, notification quiet hours)",
+      "Driving school administrator and instructor account profile information",
+      "Enrolled learner scheduling, attendance logs, and training milestone records",
+      "Support correspondence submitted to support@nevrora-works.com",
     ],
     purposes: [
-      "Calculating mathematically precise local Tithi, Nakshatra, and Muhurat timings",
-      "Providing quiet, private daily spiritual practice routines without commercial interruption",
-      "Local on-device synchronization of personal spiritual progress",
+      "Operating driving institute class rosters, vehicle schedules, and learner attendance logs",
+      "Generating training completion summaries and fee receipts for enrolled students",
+      "Providing technical support and account assistance",
     ],
     rights: [
-      "Right to complete privacy: Spiritual records are strictly client-side by default",
-      "Right to immediate local data deletion with one tap",
+      "Right to access and export institute and learner records",
+      "Right to correction and erasure of personal data upon account closure",
       "Right to contact our Grievance Officer under DPDP Act 2023",
     ],
     grievanceOfficer: {
       name: STATUTORY_DETAILS.grievanceContact.name,
-      role: "Grievance Officer — Sadhana Daily",
+      role: "Grievance Officer — DriveIQ (Nevrora Works)",
       email: STATUTORY_DETAILS.grievanceContact.email,
       phone: STATUTORY_DETAILS.grievanceContact.phone,
       address: STATUTORY_DETAILS.registeredOffice,
     },
     clauses: [
       {
-        heading: "1. Sacred Practice & Privacy First Architecture",
+        heading: "1. Scope and Product Context",
         body: [
-          "Sadhana Daily is built upon principles of reverence and complete user privacy. Operating under the Digital Personal Data Protection Act, 2023 (DPDP Act 2023), our application contains zero third-party advertisement trackers, zero behavioral profiling, and zero data brokerage integrations.",
+          "This Privacy Notice governs DriveIQ, a SaaS operations and scheduling product operated by Nevrora Works (Nevrora Technologies Private Limited) under the Digital Personal Data Protection Act, 2023 (DPDP Act 2023).",
         ],
       },
       {
-        heading: "2. Astrological Calculations & Local Data",
+        heading: "2. Tenant Data Isolation & Security",
         body: [
-          "Panchang and muhurta calculations are performed locally on your device whenever possible. Geographic location coordinates are used strictly to calculate planetary horizons and are never transmitted to third parties or logged remotely.",
+          "Driving school records, instructor schedules, and student progress logs are logically isolated per institute account and encrypted in transit and at rest.",
         ],
       },
       {
         heading: "3. Data Principal Rights & Redressal",
         body: [
-          "You retain complete ownership over your spiritual practice data. You may export or purge all application data instantly.",
-          `Designated Grievance Officer: ${STATUTORY_DETAILS.grievanceContact.name} (${STATUTORY_DETAILS.grievanceContact.email}).`,
+          "Institutes and learners may exercise their statutory rights of access, correction, and erasure by contacting our Grievance Officer.",
+          `Grievance Officer: ${STATUTORY_DETAILS.grievanceContact.name} (${STATUTORY_DETAILS.grievanceContact.email}).`,
+        ],
+      },
+    ],
+  },
+};
+
+export const PRODUCT_TERMS_NOTICES: Record<string, PrivacyNotice> = {
+  "sadhana-daily": {
+    slug: "sadhana-daily",
+    productSlug: "sadhana-daily",
+    effectiveVersion: "1.0",
+    title: "Product Terms of Use: Sadhana Daily",
+    lastUpdated: "16 November 2026",
+    dataCollected: [],
+    purposes: [],
+    rights: [
+      "Personal, non-exclusive license to use Sadhana Daily for individual spiritual and calendar reference",
+      "Clear notice of Coming Soon preview status and feature evolution",
+      "Direct product support via support@nevrora-works.com",
+    ],
+    grievanceOfficer: STATUTORY_DETAILS.grievanceContact,
+    clauses: [
+      {
+        heading: "1. Product Scope & Acceptance",
+        body: [
+          "These Product Terms govern your access to and use of Sadhana Daily, operated by Nevrora Works (Nevrora Technologies Private Limited).",
+        ],
+      },
+      {
+        heading: "2. Informational & Cultural Reference Purpose",
+        body: [
+          "Panchang, tithi, and muhurat calculations are provided for cultural, astronomical, and personal contemplative reference.",
+        ],
+      },
+      {
+        heading: "3. Support & Contact",
+        body: [
+          `For product questions or support, contact ${STATUTORY_DETAILS.supportEmail}.`,
+        ],
+      },
+    ],
+  },
+  "neermiti-collections": {
+    slug: "neermiti-collections",
+    productSlug: "neermiti-collections",
+    effectiveVersion: "1.0",
+    title: "Product Terms of Use: Neermiti Collections",
+    lastUpdated: "16 November 2026",
+    dataCollected: [],
+    purposes: [],
+    rights: [
+      "Transparent product descriptions, weave provenance, and care instructions",
+      "Clear return, exchange, and order support policies upon storefront launch",
+      "Direct customer support via support@nevrora-works.com",
+    ],
+    grievanceOfficer: STATUTORY_DETAILS.grievanceContact,
+    clauses: [
+      {
+        heading: "1. Product Scope & Storefront Preview",
+        body: [
+          "These Product Terms govern Neermiti Collections, operated by Nevrora Works (Nevrora Technologies Private Limited). During the Coming Soon preview phase, no online checkout charges are processed.",
+        ],
+      },
+      {
+        heading: "2. Handloom Characteristics",
+        body: [
+          "Authentic handloom textiles feature natural variations in weave texture and plant-dyed tones, reflecting genuine artisan craftsmanship.",
+        ],
+      },
+      {
+        heading: "3. Support & Contact",
+        body: [
+          `For product enquiries or assistance, contact ${STATUTORY_DETAILS.supportEmail}.`,
+        ],
+      },
+    ],
+  },
+  driveiq: {
+    slug: "driveiq",
+    productSlug: "driveiq",
+    effectiveVersion: "1.0",
+    title: "Product Terms of Use: DriveIQ",
+    lastUpdated: "16 November 2026",
+    dataCollected: [],
+    purposes: [],
+    rights: [
+      "Clear SaaS subscription and pilot onboarding terms for driving schools",
+      "Institute ownership of uploaded student and scheduling records",
+      "Direct technical support via support@nevrora-works.com",
+    ],
+    grievanceOfficer: STATUTORY_DETAILS.grievanceContact,
+    clauses: [
+      {
+        heading: "1. Product Scope & SaaS Preview",
+        body: [
+          "These Product Terms govern DriveIQ, a SaaS operations platform operated by Nevrora Works (Nevrora Technologies Private Limited).",
+        ],
+      },
+      {
+        heading: "2. Account Responsibilities",
+        body: [
+          "Participating driving institutes are responsible for maintaining accurate instructor and learner authorization records.",
+        ],
+      },
+      {
+        heading: "3. Support & Contact",
+        body: [
+          `For pilot onboarding or product support, contact ${STATUTORY_DETAILS.supportEmail}.`,
         ],
       },
     ],

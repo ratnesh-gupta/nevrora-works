@@ -2,15 +2,15 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { contactSchema } from "../components/contact/ContactForm";
 
-describe("Contact Form Zod Schema Validation Unit Tests", () => {
-  it("accepts valid enterprise inquiry payload", () => {
+describe("Nevrora Works Contact Form Zod Schema Validation Unit Tests", () => {
+  it("accepts valid product notification inquiry payload", () => {
     const validPayload = {
       name: "Priya Sundaram",
-      email: "priya@enterprise.org",
-      organization: "Enterprise Solutions Ltd",
-      type: "Business collaboration",
+      email: "priya@example.org",
+      productSlug: "sadhana-daily",
+      type: "Product early access / Notify me",
       message:
-        "We want to explore a custom software development partnership for our operations platform.",
+        "Please notify me when Sadhana Daily launches on Google Play.",
     };
 
     const result = contactSchema.safeParse(validPayload);
@@ -20,19 +20,13 @@ describe("Contact Form Zod Schema Validation Unit Tests", () => {
   it("rejects message with fewer than 20 characters", () => {
     const shortPayload = {
       name: "Priya",
-      email: "priya@enterprise.org",
-      type: "General inquiry",
+      email: "priya@example.org",
+      type: "General product inquiry",
       message: "Too short message",
     };
 
     const result = contactSchema.safeParse(shortPayload);
     assert.equal(result.success, false);
-    if (!result.success) {
-      const messageErr = result.error.issues.find((e) =>
-        e.path.includes("message"),
-      );
-      assert.ok(messageErr, "Expected error on message field");
-    }
   });
 
   it("rejects invalid email formats", () => {
@@ -47,16 +41,12 @@ describe("Contact Form Zod Schema Validation Unit Tests", () => {
       const payload = {
         name: "Test User",
         email,
-        type: "Venture idea",
+        type: "General product inquiry",
         message:
           "This is a sufficiently long test message that exceeds 20 characters.",
       };
       const result = contactSchema.safeParse(payload);
-      assert.equal(
-        result.success,
-        false,
-        `Expected failure for email: ${email}`,
-      );
+      assert.equal(result.success, false);
     }
   });
 

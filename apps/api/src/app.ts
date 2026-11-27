@@ -3,8 +3,9 @@ import { corsMiddleware, helmetMiddleware } from "./middleware/security.js";
 import { globalRateLimiter } from "./middleware/rateLimiter.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { healthRouter } from "./routes/health.router.js";
-import { servicesRouter } from "./routes/services.router.js";
 import { productsRouter } from "./routes/products.router.js";
+import { supportRouter } from "./routes/support.router.js";
+import { announcementsRouter } from "./routes/announcements.router.js";
 import { companyRouter } from "./routes/company.router.js";
 import { contactRouter } from "./routes/contact.router.js";
 
@@ -23,10 +24,11 @@ export function createApp(): Express {
   app.use(express.json({ limit: "100kb" }));
   app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 
-  // Routes mounting
+  // Nevrora Works routes mounting (B2B /api/services strictly excluded per Section 3 & 11)
   app.use(healthRouter);
-  app.use("/api", servicesRouter);
   app.use("/api", productsRouter);
+  app.use("/api", supportRouter);
+  app.use("/api", announcementsRouter);
   app.use("/api", companyRouter);
   app.use("/api", contactRouter);
 

@@ -23,14 +23,19 @@ export function Header() {
           <Link
             href="/"
             className="group flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded-md"
-            aria-label="Nevrora Ventures Home"
+            aria-label="Nevrora Works Home"
           >
-            <NevroraLogo variant="horizontal" theme="light" size="md" />
-            <span className="sr-only">Nevrora Ventures</span>
+            <NevroraLogo
+              variant="horizontal"
+              theme="light"
+              size="md"
+              subtitle="WORKS"
+            />
+            <span className="sr-only">Nevrora Works — Ideas into products.</span>
           </Link>
         </div>
 
-        {/* Desktop Primary Navigation: Strictly 6 locked items, NO /ventures */}
+        {/* Desktop Primary Navigation: 6 Nevrora Works IA items */}
         <nav
           className="hidden lg:flex items-center gap-8"
           aria-label="Primary navigation"
@@ -45,7 +50,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-sm font-medium transition-colors hover:text-blue-600 ${
+                className={`text-sm font-medium transition-colors hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded px-1 py-0.5 ${
                   isActive ? "text-blue-600 font-semibold" : "text-[#0B1020]"
                 }`}
                 aria-current={isActive ? "page" : undefined}
